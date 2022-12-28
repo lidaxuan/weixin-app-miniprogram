@@ -43,8 +43,8 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.23.2",
-  "appid": "wx170905084135c22a",
-  "projectname": "www.watch-life.net-live",
+  "appid": "wx19b342cface26b58",
+  "projectname": "weixin-app-miniprogram",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "packOptions": {

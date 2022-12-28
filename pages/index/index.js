@@ -25,8 +25,52 @@ var domain = config.getDomain;
 
 Page({
   data: {
-    postsList: [],
-    postsstickyList: [],
+    postsList: [{
+        listAdEvery: 1,
+        listAd: 1,
+        videoAdId: 1,
+        listAdId: 2,
+        id: 234,
+        title: {
+          rendered: "今天简单记录"
+        },
+        date: '2022-12-27',
+        total_comments: 123,
+        like_count: 111,
+        pageviews: 123,
+        post_medium_image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2'
+      },
+      {
+        listAdEvery: 1,
+        listAd: 1,
+        videoAdId: 1,
+        listAdId: 2,
+        id: 234,
+        title: {
+          rendered: "今天简单记录"
+        },
+        date: '2022-12-27',
+        total_comments: 123,
+        like_count: 111,
+        pageviews: 123,
+        post_medium_image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2'
+      },
+    ],
+    postsstickyList: [{
+        // categoryImage: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+        id: 12313123123123,
+        title: {
+          rendered: '一起来学React'
+        }
+      },
+      {
+        // categoryImage: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+        id: 12313123123123,
+        title: {
+          rendered: '一起来学Vue'
+        }
+      },
+    ],
     postsShowSwiperList: [],
     isLastPage: false,
     page: 1,
@@ -35,14 +79,18 @@ Page({
     showerror: "none",
     showCategoryName: "",
     categoryName: "",
-    floatDisplay: "none",
+    floatDisplay: "block", // none
     listAdsuccess: true,
     webSiteName: webSiteName,
     domain: domain,
     isFirst: false, // 是否第一次打开,
     isLoading: false,
     swipe_nav: [],
-    selected_nav: []
+    selected_nav: [{
+      enable: 'yes',
+      image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+      title: '奥术大师大撒撒'
+    }]
 
   },
   formSubmit: function (e) {
@@ -119,64 +167,63 @@ Page({
 
   },
   onLoad: function (options) {
-    var self = this;
-    wx.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline'],
-      success: function (e) {
-        //console.log(e);
-      }
-    })
-    // 设置页面标题：文章分类
-    wx.setNavigationBarTitle({
-      title: webSiteName
-    });
-    self.fetchTopFivePosts();
-    Adapter.setInterstitialAd("enable_index_interstitial_ad");
-    self.fetchPostsData(self.data);
+    // var self = this;
+    // wx.showShareMenu({
+    //   withShareTicket: true,
+    //   menus: ['shareAppMessage', 'shareTimeline'],
+    //   success: function (e) {
+    //     //console.log(e);
+    //   }
+    // })
+    // // 设置页面标题：文章分类
+    // wx.setNavigationBarTitle({
+    //   title: webSiteName
+    // });
+    // self.fetchTopFivePosts();
+    // Adapter.setInterstitialAd("enable_index_interstitial_ad");
+    // self.fetchPostsData(self.data);
 
-    // 判断用户是不是第一次打开，弹出添加到我的小程序提示
-    var isFirstStorage = wx.getStorageSync('isFirst');
-    // console.log(isFirstStorage);
-    if (!isFirstStorage) {
-      self.setData({
-        isFirst: true
-      });
-      wx.setStorageSync('isFirst', 'no')
-      // console.log(wx.getStorageSync('isFirst'));
-      setTimeout(function () {
-        self.setData({
-          isFirst: false
-        });
-      }, 5000)
-    }
+    // // 判断用户是不是第一次打开，弹出添加到我的小程序提示
+    // var isFirstStorage = wx.getStorageSync('isFirst');
+    // // console.log(isFirstStorage);
+    // if (!isFirstStorage) {
+    //   self.setData({
+    //     isFirst: true
+    //   });
+    //   wx.setStorageSync('isFirst', 'no')
+    //   // console.log(wx.getStorageSync('isFirst'));
+    //   setTimeout(function () {
+    //     self.setData({
+    //       isFirst: false
+    //     });
+    //   }, 5000)
+    // }
 
     this.getHomeconfig();
 
   },
   onShow: function (options) {
-    if (typeof this.getTabBar === 'function' &&
-    this.getTabBar()) {
-    this.getTabBar().setData({
-      selected: 0
-    })
-  }
-    wx.setStorageSync('openLinkCount', 0);
+    // if (typeof this.getTabBar === 'function' &&
+    //   this.getTabBar()) {
+    //   this.getTabBar().setData({
+    //     selected: 0
+    //   })
+    // }
+    // wx.setStorageSync('openLinkCount', 0);
 
-    var nowDate = new Date();
-    nowDate = nowDate.getFullYear() + "-" + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
-    nowDate = new Date(nowDate).getTime();
-    var _openAdLogs = wx.getStorageSync('openAdLogs') || [];
-    var openAdLogs = [];
-    _openAdLogs.map(function (log) {
-      if (new Date(log["date"]).getTime() >= nowDate) {
-        openAdLogs.unshift(log);
-      }
+    // var nowDate = new Date();
+    // nowDate = nowDate.getFullYear() + "-" + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();
+    // nowDate = new Date(nowDate).getTime();
+    // var _openAdLogs = wx.getStorageSync('openAdLogs') || [];
+    // var openAdLogs = [];
+    // _openAdLogs.map(function (log) {
+    //   if (new Date(log["date"]).getTime() >= nowDate) {
+    //     openAdLogs.unshift(log);
+    //   }
+    // })
 
-    })
-
-    wx.setStorageSync('openAdLogs', openAdLogs);
-    console.log(wx.getStorageSync('openAdLogs'));
+    // wx.setStorageSync('openAdLogs', openAdLogs);
+    // console.log(wx.getStorageSync('openAdLogs'));
 
   },
   getHomeconfig() {
@@ -185,41 +232,90 @@ Page({
     const res = {
       data: {
         expand: {
-          swipe_nav:[
-            {img:'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2', type: 'url'},
-            {img:'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2', type: 'url'},
-            {img:'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2', type: 'url'},
+          swipe_nav: [{
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              url: '/pages/document/system/system',
+              type: 'navigateTo', //直接跳转类型
+              enable: 'yes'
+            },
+            {
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              type: 'url', //直接跳转类型
+              enable: 'yes'
+            },
+            {
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              type: 'url', //直接跳转类型
+              enable: 'yes'
+            },
+            {
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              type: 'url', //直接跳转类型
+              enable: 'yes'
+            },
           ],
-          selected_nav: []
+          selected_nav: [{
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              enable: 'yes',
+              title: '案例',
+            },
+            {
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              enable: 'yes',
+              title: '案例',
+            },
+            {
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              enable: 'yes',
+              title: '案例',
+            },
+            {
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              enable: 'yes',
+              title: '案例',
+            },
+            {
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              enable: 'yes',
+              title: '案例',
+            },
+            {
+              image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2',
+              enable: 'yes',
+              title: '案例',
+            },
+          ]
         },
         selected_nav: '11111,123123,123',
         zanImageurl: '11111,123123,123',
         logoImageurl: '11111,123123,123',
+        downloadfileDomain: '113123,12213',
+        businessDomain: '113123,12213',
       }
     }
     // var getHomeconfig = wxRequest.getRequest(Api.get_homeconfig());
     // getHomeconfig.then(res => {
-      // console.log(res.data);
-      let expand = res.data.expand;
-      let swipe_nav = expand.swipe_nav;
-      let selected_nav = expand.selected_nav;
-      let _d = res.data.downloadfileDomain
-      let _b = res.data.businessDomain
+    // console.log(res.data);
+    let expand = res.data.expand;
+    let swipe_nav = expand.swipe_nav;
+    let selected_nav = expand.selected_nav;
+    let _d = res.data.downloadfileDomain
+    let _b = res.data.businessDomain
 
-      let zanImageurl = res.data.zanImageurl
-      let logoImageurl = res.data.logoImageurl
+    let zanImageurl = res.data.zanImageurl
+    let logoImageurl = res.data.logoImageurl
 
-      let downloadfileDomain = _d.length ? _d.split(',') : []
-      let businessDomain = _b.length ? _b.split(',') : []
-      self.setData({
-        swipe_nav: swipe_nav,
-        selected_nav,
-        selected_nav
-      });
-      wx.setStorageSync('downloadfileDomain', downloadfileDomain);
-      wx.setStorageSync('businessDomain', businessDomain);
-      wx.setStorageSync('zanImageurl', zanImageurl);
-      wx.setStorageSync('logoImageurl', logoImageurl);
+    let downloadfileDomain = _d.length ? _d.split(',') : []
+    let businessDomain = _b.length ? _b.split(',') : []
+    self.setData({
+      swipe_nav: swipe_nav,
+      selected_nav,
+      selected_nav
+    });
+    wx.setStorageSync('downloadfileDomain', downloadfileDomain);
+    wx.setStorageSync('businessDomain', businessDomain);
+    wx.setStorageSync('zanImageurl', zanImageurl);
+    wx.setStorageSync('logoImageurl', logoImageurl);
     // });
   },
 
@@ -264,9 +360,9 @@ Page({
                 postsList: self.data.postsList.concat(response.data.map(function (item) {
 
                   var strdate = item.date
-                 
-                    item.categoryImage = "";
-                
+
+                  item.categoryImage = "";
+
 
                   if (item.post_medium_image == null || item.post_medium_image == '') {
                     item.post_medium_image = "../../images/logo700.png";
@@ -334,22 +430,22 @@ Page({
     var self = this;
     var getCategoriesRequest = wxRequest.getRequest(Api.getCategoriesIds());
     getCategoriesRequest.then(res => {
-     
+
 
       var getPostsRequest = wxRequest.getRequest(Api.getStickyPosts(data));
       getPostsRequest
         .then(response => {
           if (response.statusCode === 200) {
             if (response.data.length) {
-             
+
               self.setData({
                 floatDisplay: "block",
                 postsstickyList: self.data.postsstickyList.concat(response.data.map(function (item) {
 
                   var strdate = item.date
-                 
-                    item.categoryImage = "";
-                 
+
+                  item.categoryImage = "";
+
 
                   if (item.post_medium_image == null || item.post_medium_image == '') {
                     item.post_medium_image = "../../images/logo700.png";
@@ -380,8 +476,8 @@ Page({
             }
           }
         })
-      
-   
+
+
 
     })
 
@@ -469,22 +565,19 @@ Page({
       })
     }
     if (type === 'miniapp') { // 其他小程序
-      if(jumptype=='embedded')
-      {
+      if (jumptype == 'embedded') {
         wx.openEmbeddedMiniProgram({
           appId: appid,
           path: path
         })
 
-      }
-      else
-      {
+      } else {
         wx.navigateToMiniProgram({
           appId: appid,
           path: path
         })
       }
-      
+
     }
   },
   //返回首页

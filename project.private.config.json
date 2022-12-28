@@ -32,14 +32,16 @@
         },
         {
           "name": "",
-          "pathName": "pages/theme/theme",
+          "pathName": "pages/topic/topic",
           "query": "",
+          "launchMode": "default",
           "scene": null
         },
         {
           "name": "",
-          "pathName": "pages/pages/pages",
+          "pathName": "pages/hot/hot",
           "query": "",
+          "launchMode": "default",
           "scene": null
         },
         {

@@ -16,8 +16,8 @@ var util = require('../../utils/util.js');
 var wxApi = require('../../utils/wxApi.js')
 var wxRequest = require('../../utils/wxRequest.js')
 const Adapter = require('../../utils/adapter.js')
-var webSiteName= config.getWebsiteName;
-var domain =config.getDomain
+var webSiteName = config.getWebsiteName;
+var domain = config.getDomain
 
 import config from '../../utils/config.js'
 
@@ -25,24 +25,64 @@ import config from '../../utils/config.js'
 Page({
   data: {
     title: '文章列表',
-    postsList: {},  
+    postsList: [
+      {
+        post_id: 12342,
+        post_title: '一招教会你',
+        comment_total: 123,
+        like_count: 1234,
+        pageviews: 213,
+        post_date: '2022-12-22',
+        post_thumbnail_image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2'
+      },
+      {
+        post_id: 12342,
+        post_title: '一招教会你',
+        comment_total: 123,
+        like_count: 1234,
+        pageviews: 213,
+        post_date: '2022-12-22',
+        post_thumbnail_image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2'
+      },
+      {
+        post_id: 12342,
+        post_title: '一招教会你',
+        comment_total: 123,
+        like_count: 1234,
+        pageviews: 213,
+        post_date: '2022-12-22',
+        post_thumbnail_image: 'https://dss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/1022.jpg?2'
+      },
+    ],
     page: 1,
-    search: '', 
-    showerror:"none", 
+    search: '',
+    showerror: "none",
     showallDisplay: "block",
     displaySwiper: "block",
-    floatDisplay: "none", 
+    floatDisplay: "none",
     topBarItems: [
-        // id name selected 选中状态
-      
-        { id: '2', name: '浏览数', selected: true }, 
-        { id: '1', name: '评论数', selected: false },       
-        { id: '3', name: '点赞数', selected: false },
-        // { id: '4', name: '鼓励数', selected: false }
+      // id name selected 选中状态
+
+      {
+        id: '2',
+        name: '浏览数',
+        selected: true
+      },
+      {
+        id: '1',
+        name: '评论数',
+        selected: false
+      },
+      {
+        id: '3',
+        name: '点赞数',
+        selected: false
+      },
+      // { id: '4', name: '鼓励数', selected: false }
     ],
     tab: '1',
-    webSiteName:webSiteName,
-    domain:domain
+    webSiteName: webSiteName,
+    domain: domain
 
   },
   formSubmit: function (e) {
@@ -54,10 +94,10 @@ Page({
       url: url
     })
   },
- 
+
   onShareAppMessage: function () {
-    var title = "分享“"+ webSiteName +"”的文章排行。";
-    var path ="pages/hot/hot";
+    var title = "分享“" + webSiteName + "”的文章排行。";
+    var path = "pages/hot/hot";
     return {
       title: title,
       path: path,
@@ -69,18 +109,17 @@ Page({
       }
     }
   },
-   // 自定义分享朋友圈
-   onShareTimeline: function() {   
+  // 自定义分享朋友圈
+  onShareTimeline: function () {
     return {
-      title:  "“"+ webSiteName +"”的文章排行",
-      path: 'pages/hot/hot' ,
-      
+      title: "“" + webSiteName + "”的文章排行",
+      path: 'pages/hot/hot',
+
     }
   },
-  reload:function(e)
-  {
-    var self = this;   
-    self.fetchPostsData(self.data);
+  reload: function (e) {
+    var self = this;
+    // self.fetchPostsData(self.data);
   },
 
   onTapTag: function (e) {
@@ -96,94 +135,88 @@ Page({
       }
     }
     self.setData({
-        topBarItems: topBarItems, 
-        tab: tab
+      topBarItems: topBarItems,
+      tab: tab
 
     })
-    if (tab !== 0) {
-      this.fetchPostsData(tab);
-    } else {
-      this.fetchPostsData("2");
-    }
+    // if (tab !== 0) {
+    //   this.fetchPostsData(tab);
+    // } else {
+    //   this.fetchPostsData("2");
+    // }
   },
-  
+
   onLoad: function (options) {
     var self = this;
     wx.showShareMenu({
-            withShareTicket:true,
-            menus:['shareAppMessage','shareTimeline'],
-            success:function(e)
-            {
-              //console.log(e);
-            }
-      })
-    this.fetchPostsData("2");
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline'],
+      success: function (e) {
+        //console.log(e);
+      }
+    })
+    // this.fetchPostsData("2");
     Adapter.setInterstitialAd("enable_hot_interstitial_ad");
-        
+
   },
   //获取文章列表数据
   fetchPostsData: function (tab) {
-    var self = this;  
+    var self = this;
     self.setData({
-        postsList: []
+      postsList: []
     });
-    
-  
+
+
     var getTopHotPostsRequest = wxRequest.getRequest(Api.getTopHotPosts(tab));
-    getTopHotPostsRequest.then(response =>{
+    getTopHotPostsRequest.then(response => {
         if (response.statusCode === 200) {
-            self.setData({
-                showallDisplay: "block",
-                floatDisplay: "block",
-                postsList: self.data.postsList.concat(response.data.map(function (item) {
-                    var strdate = item.post_date
-                    if (item.post_thumbnail_image == null || item.post_thumbnail_image == '') {
-                        item.post_thumbnail_image = '../../images/logo700.png';
-                    }
-                    item.post_date = util.cutstr(strdate, 10, 1);
-                    return item;
-                })),
-
-            });
-
-        } else if (response.statusCode === 404) { 
-
-            // wx.showModal({
-            //     title: '加载失败',
-            //     content: '加载数据失败,可能缺少相应的数据',
-            //     showCancel: false,
-            // });
-
-            console.log('加载数据失败,可能缺少相应的数据'); 
+          self.setData({
+            showallDisplay: "block",
+            floatDisplay: "block",
+            postsList: self.data.postsList.concat(response.data.map(function (item) {
+              var strdate = item.post_date
+              if (item.post_thumbnail_image == null || item.post_thumbnail_image == '') {
+                item.post_thumbnail_image = '../../images/logo700.png';
+              }
+              item.post_date = util.cutstr(strdate, 10, 1);
+              return item;
+            })),
+          });
+        } else if (response.statusCode === 404) {
+          // wx.showModal({
+          //     title: '加载失败',
+          //     content: '加载数据失败,可能缺少相应的数据',
+          //     showCancel: false,
+          // });
+          console.log('加载数据失败,可能缺少相应的数据');
         }
-    })
-    .catch(function () {
+      })
+      .catch(function () {
         wx.hideLoading();
         if (data.page == 1) {
 
-            self.setData({
-                showerror: "block",
-                floatDisplay: "block"
-            });
+          self.setData({
+            showerror: "block",
+            floatDisplay: "block"
+          });
 
+        } else {
+          // wx.showModal({
+          //     title: '加载失败',
+          //     content: '加载数据失败,请重试.',
+          //     showCancel: false,
+          // });
         }
-        else {
-            // wx.showModal({
-            //     title: '加载失败',
-            //     content: '加载数据失败,请重试.',
-            //     showCancel: false,
-            // });
-        }
-    })
-    .finally(function () {
+      })
+      .finally(function () {
 
         setTimeout(function () {
-            wx.hideLoading();
+          wx.hideLoading();
 
         }, 1500);
 
-        });    
-  }, 
+      });
+  },
   // 跳转至查看文章详情
   redictDetail: function (e) {
     // console.log('查看文章');
@@ -196,6 +229,3 @@ Page({
 
 
 })
-
-
-

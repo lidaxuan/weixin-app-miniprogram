@@ -11,11 +11,12 @@
 <import src="../../templates/copyright.wxml" />
 <import src="../../templates/loading.wxml" />
 
-<ui-sys	tabbar >
+<ui-sys tabbar>
 
   <ui-navbar back="{{false}}" bg="ui-BG-Main" op isSlot>
     <view class="flex-bar p-3">
-      <image src="/images/logo.png" mode="aspectFill" style="width: 200rpx;height: 56rpx;" />
+      <text style="width: 200rpx;height: 56rpx;">lidaxuan-logo</text>
+      <!-- <image src="/images/logo.png" mode="aspectFill" style="width: 200rpx;height: 56rpx;" /> -->
     </view>
   </ui-navbar>
   <!-- 首次进入引导添加到“我的小程序” -->
@@ -24,11 +25,10 @@
     <text>了解"{{webSiteName}}"最新文章</text>
   </view>
 
-
   <view class="index-top  ">
 
     <view class="indexbg ui-BG-Main" style="margin-top: -{{sys_navBar+sys_statusBar+sys_capsule.top}}rpx;"> </view>
- 
+
     <view class="ui-BG-card ui-BG ">
       <!-- 搜索 -->
       <form catchsubmit="formSubmit" catchreset="formReset" id="search-form">
@@ -50,7 +50,7 @@
 
       <!-- 轮播图 -->
       <view class=" ">
-        <ui-swiper info="{{swipe_nav}}" wx:if="{{swipe_nav.length > 0}}" dotStyle="long" dotCur="ui-BG-Main"height="260rpx" imgHeight="260rpx" imgName="image" swiperCss="radius" bind:uiTap="redictAppDetail"   />
+        <ui-swiper info="{{swipe_nav}}" wx:if="{{swipe_nav.length > 0}}" dotStyle="long" dotCur="ui-BG-Main" height="260rpx" imgHeight="260rpx" imgName="image" swiperCss="radius" bind:uiTap="redictAppDetail" />
       </view>
 
 
@@ -58,7 +58,6 @@
 
 
   </view>
-
 
   <!-- 图标导航 -->
   <view class="index-sticky ui-BG-card ui-BG" wx:if="{{selected_nav.length > 0}}">
@@ -94,14 +93,14 @@
 
   </view>
 
- <video-channels type="3"/>  
+  <video-channels type="3" />
 
   <!-- 文章列表 -->
   <view class="container ">
     <!-- 列表template模板 -->
     <template is="tempCommonList" data="{{postsList:postsList,listAdsuccess:listAdsuccess}}" />
     <view style='display:{{isLoading?"block":"none"}};margin-top: 48rpx;'>
-      <template is="tempLoading" />
+      <!-- <template is="tempLoading" /> -->
     </view>
     <!-- 无更多文章提示 -->
     <view class="loadingmore" style="display:{{floatDisplay}}">
@@ -117,11 +116,11 @@
 
   <!-- 无法访问网络 -->
   <view class="showerror" style="display:{{showerror}}">
-      <text class="cicon-wifi-off text-xsl"></text> 
+    <text class="cicon-wifi-off text-xsl"></text>
     <view class="errortext">
       暂时无法访问网络，下拉重试...
     </view>
   </view>
 
-  
+
 </ui-sys>
